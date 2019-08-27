@@ -16,7 +16,7 @@ function islandora_status_page_requirements($phase){
         $gemini_url = $islandora_config->get('gemini_url');
         if ($gemini_url == ""){
             $value = "Gemini URL must be set.";
-            $sev = "REQUIREMENT_ERROR";
+            $sev = REQUIREMENT_ERROR;
 
         } else {
             $client = \Drupal::httpClient();
@@ -25,10 +25,10 @@ function islandora_status_page_requirements($phase){
             } catch (RequestException $e){
                 if ($e->getCode() == 405) {
                     $value = "Gemini is reachable";
-                    $sev = "REQUIREMENT_OK";
+                    $sev = REQUIREMENT_OK;
                 } else {
                     $value = "Gemini not reachable";
-                    $sev = "REQUIREMENT_ERROR";
+                    $sev = REQUIREMENT_ERROR;
                 }
             }
         }
@@ -43,21 +43,21 @@ function islandora_status_page_requirements($phase){
         $cantaloupe_url = $openseadragon_config->get('iiif_server');
         if ($cantaloupe_url == "") {
             $value = "Cantaloupe URL must be set.";
-            $sev = "REQUIREMENT_ERROR";
+            $sev = REQUIREMENT_ERROR;
         } else {
             $client = \Drupal::httpClient();
             try {
                 $response = $client->get($cantaloupe_url);
                 if ($response->getStatusCode() == 200){
                     $value = "Cantaloupe is reachable";
-                    $sev = "REQUIREMENT_OK";
+                    $sev = REQUIREMENT_OK;
                 } else {
                     $value = "Cantaloupe not reachable";
-                    $sev = "REQUIREMENT_ERROR";
+                    $sev = REQUIREMENT_ERROR;
                 }
             } catch (RequestException $e) {
                 $value = "Cantaloupe not reachable";
-                $sev = "REQUIREMENT_ERROR";
+                $sev = REQUIREMENT_ERROR;
             }
         }
         $requirements["Cantaloupe URL"] = array(
