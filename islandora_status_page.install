@@ -1,0 +1,70 @@
+<?php
+
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+
+/**
+* Implements hook_requirements()
+*/
+function islandora_status_page_requirements($phase){
+    $requirements = array();
+
+    if ($phase === 'runtime') {
+
+        // GEMINI
+        $islandora_config = \Drupal::config('islandora.settings');
+        $gemini_url = $islandora_config->get('gemini_url');
+        if ($gemini_url == ""){
+            $value = "Gemini URL must be set.";
+            $sev = "REQUIREMENT_ERROR";
+
+        } else {
+            $client = \Drupal::httpClient();
+            try {
+                $response = $client->get($gemini_url);
+            } catch (RequestException $e){
+                if ($e->getCode() == 405) {
+                    $value = "Gemini is reachable";
+                    $sev = "REQUIREMENT_OK";
+                } else {
+                    $value = "Gemini not reachable";
+                    $sev = "REQUIREMENT_ERROR";
+                }
+            }
+        }
+        $requirements["Gemini URL"] = array(
+            'title' => 'Gemini',
+            'value' => $value,
+            'severity' => $sev
+        );
+
+        // CANTALOUPE
+        $openseadragon_config = \Drupal::config('openseadragon.settings');
+        $cantaloupe_url = $openseadragon_config->get('iiif_server');
+        if ($cantaloupe_url == "") {
+            $value = "Cantaloupe URL must be set.";
+            $sev = "REQUIREMENT_ERROR";
+        } else {
+            $client = \Drupal::httpClient();
+            try {
+                $response = $client->get($cantaloupe_url);
+                if ($response->getStatusCode() == 200){
+                    $value = "Cantaloupe is reachable";
+                    $sev = "REQUIREMENT_OK";
+                } else {
+                    $value = "Cantaloupe not reachable";
+                    $sev = "REQUIREMENT_ERROR";
+                }
+            } catch (RequestException $e) {
+                $value = "Cantaloupe not reachable";
+                $sev = "REQUIREMENT_ERROR";
+            }
+        }
+        $requirements["Cantaloupe URL"] = array(
+            'title' => 'Cantaloupe (IIIF Server)',
+            'value' => $value,
+            'severity' => $sev
+        );
+    }
+    return $requirements;
+}

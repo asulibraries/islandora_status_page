@@ -1,0 +1,13 @@
+{
+    "name": "islandora_status_page",
+    "type": "drupal-module",
+    "description": "Add customizations to the Drupal status report relating to Islandora",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/islandora_status_page",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/islandora_status_page",
+        "source": "http://cgit.drupalcode.org/islandora_status_page"
+    }
+}

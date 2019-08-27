@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains islandora_status_page.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function islandora_status_page_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the islandora_status_page module.
+    case 'help.page.islandora_status_page':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Add customizations to the Drupal status report relating to Islandora') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function islandora_status_page_theme() {
+  return [
+    'islandora_status_page' => [
+      'render element' => 'children',
+    ],
+  ];
+}
